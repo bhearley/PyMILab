@@ -1,0 +1,6 @@
+TEST			  # Keyword to indicate new test
+RawFile = Example_1.json  # Name of Raw Data Neutral File
+Fail = 1		  # Tested to Failure (0 = No, 1 = Yes)
+Valid = 1		  # Valid Test (0 = No, 1 = Yes)
+YieldOff = 0.0002, 0.002  # Yield offset strain values (comma separated)
+Plot= 0			  # Additional Plots (0 = No, 1 = Yes)
