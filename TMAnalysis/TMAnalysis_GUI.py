@@ -26,6 +26,8 @@ from GUI.CheckStages import *
 from GUI.DeletePages import *
 from GUI.FileSelection import *
 from GUI.GeneralAnalysis import *
+from GUI.GetStyles import *
+from GUI.Placement import *
 from GUI.UserOptions import *
 from TMAnalysisEngine import *
 
@@ -41,8 +43,8 @@ fsize_t = 24                #title font size
 frmt = [bg_color, fontname,fsize_s,fsize_l,fsize_t]    # Pack Formatting into list
 
 # Define Images
-title_img = os.path.join(home,'GUI','Images','TitleHeader.png') # Set the title image path
-logo_img = os.path.join(home,'GUI','Images','NasaLogo.png')     # Set the logo image path
+title_img = os.path.join(home,'TMAnalysis','GUI','Images','TitleHeader.png') # Set the title image path
+logo_img = os.path.join(home,'TMAnalysis','GUI','Images','NasaLogo.png')     # Set the logo image path
 
 #Create the GUI
 class TMAnalysis_GUI:
@@ -55,18 +57,34 @@ class TMAnalysis_GUI:
         window.state('zoomed')
         window.configure(bg='white')
 
+        # Get Placement Information
+        screen_width = window.winfo_screenwidth()
+        screen_height = window.winfo_screenheight()
+        Placements(self, str(screen_width) + "x" + str(screen_height))
+
+        # Get Styles
+        GetStyles(self)
+
         #Add the Title
         self.img_hdr = ImageTk.PhotoImage(Image.open(title_img))
         self.panel_hdr = tk.Label(window, image = self.img_hdr, bg = bg_color)
-        self.panel_hdr.place(anchor = 'n', relx = 0.5, rely = 0.0)
+        self.panel_hdr.place(
+                            anchor = 'n', 
+                            relx = self.Placement['HomePage']['Title'][0], 
+                            rely = self.Placement['HomePage']['Title'][1]
+                            )
 
         #Add the NASA Logo
         self.img_nasa = ImageTk.PhotoImage(Image.open(logo_img))
         self.panel_nasa = tk.Label(window, image = self.img_nasa, bg = bg_color)
-        self.panel_nasa.place(anchor = 'e', relx = 0.999, rely = 0.06)
+        self.panel_nasa.place(
+                            anchor = 'e',
+                            relx = self.Placement['HomePage']['Logo'][0], 
+                            rely = self.Placement['HomePage']['Logo'][1]
+                            )
 
         # Build the File Selection Page
-        FileSelection(self,window,frmt)
+        FileSelection(self,window)
 
         #Main Loop
         window.mainloop()

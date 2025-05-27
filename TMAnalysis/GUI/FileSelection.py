@@ -7,44 +7,58 @@
 #   INPUTS:
 #       self    structure containing all GUI information
 #       window  window
-#       frmt    format vector
 #
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------
-def FileSelection(self,window,frmt):
+def FileSelection(self,window):
     #Import Modules
     import tkinter as tk
-
-    #Unpack Formatting
-    bg_color = frmt[0] 
-    fontname = frmt[1]
-    fsize_s = frmt[2]
+    from tkinter import ttk
 
     #Initialize list of attributes for each page
     self.att_list = {'FileSelection':[]}
 
-    # Create a StringVar to associate with the label
-    text_var = tk.StringVar()
-    text_var.set("Select the Raw Data JSON Neutral File(s) for analysis. See the TMAnalysis User Manual for additional information.")
+    # Create the frame for the start page
+    self.FS_frame1 = tk.Frame(
+                            window, 
+                            bd=self.Placement['FileSelection']['Frame1'][2], 
+                            relief="ridge", 
+                            width = self.Placement['FileSelection']['Frame1'][3],
+                            height = self.Placement['FileSelection']['Frame1'][4],
+                            bg="white"
+                            )
+    self.FS_frame1.place(
+                        anchor = 'c', 
+                        relx = self.Placement['FileSelection']['Frame1'][0], 
+                        rely = self.Placement['FileSelection']['Frame1'][1]
+                        )
+    self.att_list['FileSelection'].append('self.FS_frame1')
 
     # Create the label widget with all options
-    self.FS_desc1 = tk.Label(window, 
-                     textvariable=text_var, 
-                     anchor=tk.CENTER,       
-                     bg=bg_color,                  
-                     bd=3,              
-                     height = 3,
-                     font=(fontname, fsize_s),              
-                     padx=25,               
-                     pady=25,                
-                     justify=tk.CENTER,    
-                     relief=tk.RAISED,                
-                     wraplength=800         
-                    )
-    self.FS_desc1.place(anchor = 'n', relx = 0.5, rely = 0.25)
+    self.FS_desc1 = ttk.Label(
+                        self.FS_frame1, 
+                        text="Select the Raw Data JSON Neutral File(s) for analysis. See the TMAnalysis User Manual for additional information.", 
+                        style = "Modern1.TLabel",
+                        anchor=tk.CENTER,                       
+                        justify=tk.CENTER,                   
+                        wraplength=self.Placement['FileSelection']['Desc1'][2]         
+                        )
+    self.FS_desc1.place(
+                        anchor = 'n', 
+                        relx = self.Placement['FileSelection']['Desc1'][0], 
+                        rely = self.Placement['FileSelection']['Desc1'][1]
+                        )
     self.att_list['FileSelection'].append('self.FS_desc1')
 
     #Create a button to upload the Raw Data JSON Files
-    self.FS_btn1 = tk.Button(window, text = "Select Raw Data JSON File(s)", command = self.get_raw_json, 
-                                font = (fontname, fsize_s), bg = 'light blue')
-    self.FS_btn1.place(anchor = 'n', relx = 0.5, rely = 0.5)
+    self.FS_btn1 = ttk.Button(
+                            self.FS_frame1, 
+                            text = "Select Raw Data JSON File(s)", 
+                            command = self.get_raw_json,
+                            style =  "Modern1.TButton",
+                            )
+    self.FS_btn1.place(
+                        anchor = 'n', 
+                        relx = self.Placement['FileSelection']['Button1'][0], 
+                        rely = self.Placement['FileSelection']['Button1'][1] 
+                        )
     self.att_list['FileSelection'].append('self.FS_btn1')
