@@ -20,14 +20,14 @@ import scipy.stats
 import shutil
 
 # Import Functions
-from TMAnalysis.GUI.BuildPropTable import *
-from TMAnalysis.GUI.BuildStageTable import *
-from TMAnalysis.GUI.CheckStages import *
-from TMAnalysis.GUI.DeletePages import *
-from TMAnalysis.GUI.FileSelection import *
-from TMAnalysis.GUI.GeneralAnalysis import *
-from TMAnalysis.GUI.UserOptions import *
-from TMAnalysis.TMAnalysis import *
+from GUI.BuildPropTable import *
+from GUI.BuildStageTable import *
+from GUI.CheckStages import *
+from GUI.DeletePages import *
+from GUI.FileSelection import *
+from GUI.GeneralAnalysis import *
+from GUI.UserOptions import *
+from TMAnalysisEngine import *
 
 # Set Directories
 home = os.getcwd()
@@ -41,8 +41,8 @@ fsize_t = 24                #title font size
 frmt = [bg_color, fontname,fsize_s,fsize_l,fsize_t]    # Pack Formatting into list
 
 # Define Images
-title_img = os.path.join(home,'GUI','TitleHeader.png') # Set the title image path
-logo_img = os.path.join(home,'GUI','NasaLogo.png')     # Set the logo image path
+title_img = os.path.join(home,'GUI','Images','TitleHeader.png') # Set the title image path
+logo_img = os.path.join(home,'GUI','Images','NasaLogo.png')     # Set the logo image path
 
 #Create the GUI
 class TMAnalysis_GUI:
@@ -270,8 +270,8 @@ class TMAnalysis_GUI:
                 json.dump(self.Analysis, outfile, cls=NpEncoder)
 
             # Call Analysis Code
-            from TMAnalysis import TMAnalysis
-            self.Raw, self.Analysis, self.dir, err_flag, msg, self.Analysis_file = TMAnalysis(self.raw_files[self.fcount], self.Analysis_file, self.user_opt)
+            from TMAnalysis import TMAnalysisEngine
+            self.Raw, self.Analysis, self.dir, err_flag, msg, self.Analysis_file = TMAnalysisEngine(self.raw_files[self.fcount], self.Analysis_file, self.user_opt)
 
             # Check the error flag
             if err_flag == 1:
@@ -598,8 +598,8 @@ class TMAnalysis_GUI:
             json.dump(self.Analysis, outfile, cls=NpEncoder)
 
         # Call Analysis Code
-        from TMAnalysis import TMAnalysis
-        self.Raw, self.Analysis, self.dir, err_flag, msg, self.Analysis_file = TMAnalysis(self.raw_files[self.fcount], self.Analysis_file, self.user_opt)
+        from TMAnalysis import TMAnalysisEngine
+        self.Raw, self.Analysis, self.dir, err_flag, msg, self.Analysis_file = TMAnalysisEngine(self.raw_files[self.fcount], self.Analysis_file, self.user_opt)
 
         # Check the error flag
         if err_flag == 1:
@@ -1442,8 +1442,8 @@ class TMAnalysis_GUI:
             self.user_opt['UserEdit']['Prop'] = 0
 
             # Perform the analysis
-            from TMAnalysis import TMAnalysis
-            self.Raw, self.Analysis, self.dir, err_flag, msg, self.Analysis_file = TMAnalysis(self.raw_files[self.fcount], 0, self.user_opt)
+            from TMAnalysis import TMAnalysisEngine
+            self.Raw, self.Analysis, self.dir, err_flag, msg, self.Analysis_file = TMAnalysisEngine(self.raw_files[self.fcount], 0, self.user_opt)
 
             if err_flag == 0:
                 from GUI.GeneralAnalysis import GeneralAnalysis
