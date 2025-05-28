@@ -7,23 +7,15 @@
 #   INPUTS:
 #       self    structure containing all GUI information
 #       window  window
-#       frmt    GUI formatting
 #
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------
-def TensilePropertyPlot(self, window, frmt):
+def TensilePropertyPlot(self, window):
     # Import Modules
     from matplotlib.figure import Figure
     from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
     from matplotlib.backend_bases import MouseButton
     from matplotlib.ticker import FormatStrFormatter, ScalarFormatter
     import numpy as np
-
-    # Unpack frmt
-    bg_color = frmt[0]
-    fontname = frmt[1]           
-    fsize_s = frmt[2]
-    fsize_l = frmt[3]
-    fsize_t = frmt[4]
 
     # Unpack Data
     Raw = self.Raw
@@ -43,7 +35,8 @@ def TensilePropertyPlot(self, window, frmt):
         del self.canvas
 
     # Create Figure
-    self.fig = Figure(figsize=(6,4.25), dpi = 125)
+    self.fig = Figure(figsize=(self.Placement['PropTable']['Figure1'][2],self.Placement['PropTable']['Figure1'][3]), dpi = self.Placement['PropTable']['Figure1'][4])
+    self.fig.subplots_adjust(left=0.1, right=0.975, top=0.95, bottom=0.15)
     self.plot1 = self.fig.add_subplot(111)
 
     # Get the option
@@ -76,7 +69,7 @@ def TensilePropertyPlot(self, window, frmt):
                     stress_val = Analysis['Tensile Analysis']['Yield-'+dir]['Yield Strength']['Value'][i]
                     self.plot1.plot(strain_val,stress_val,'o',label=str(Analysis['Tensile Analysis']['Yield-' + dir]['Offset Strain']['Value'][i]) + Raw['Raw Data']['Units']['Strain']['Value'] + ' Offset Yield')
 
-        # -- Plo Ultimate Strength
+        # -- Plot Ultimate Strength
         if Analysis['Tensile Analysis']['Ultimate Strength-' + dir]['Value'] != None:
             self.plot1.plot(Analysis['Tensile Analysis']['Strain at UTS-' + dir]['Value'],Analysis['Tensile Analysis']['Ultimate Strength-' + dir]['Value'],'mo',label='Ultimate Strength')
 
@@ -172,8 +165,16 @@ def TensilePropertyPlot(self, window, frmt):
     self.toolbar = NavigationToolbar2Tk(self.canvas, window)
     self.toolbar.update()
     #--Format Toolbar
-    self.toolbar.config(bg=bg_color)
-    self.toolbar._message_label.config(background=bg_color)
-    self.toolbar.place(anchor = 'e', relx = self.tool_x, rely = self.tool_y)
+    self.toolbar.config(bg='white')
+    self.toolbar._message_label.config(background='white')
+    self.toolbar.place(
+                    anchor = 'n', 
+                    relx = self.Placement['PropTable']['Toolbar1'][0], 
+                    rely = self.Placement['PropTable']['Toolbar1'][1]
+                    )
     #--Add the figure to the GUI
-    self.canvas.get_tk_widget().place(anchor = 'n', relx = self.plt_x, rely = self.plt_y)
+    self.canvas.get_tk_widget().place(
+                                    anchor = 'n', 
+                                    relx = self.Placement['PropTable']['Figure1'][0], 
+                                    rely = self.Placement['PropTable']['Figure1'][1]
+                                    )

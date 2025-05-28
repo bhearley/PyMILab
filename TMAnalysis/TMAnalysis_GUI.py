@@ -34,14 +34,6 @@ from TMAnalysisEngine import *
 # Set Directories
 home = os.getcwd()
 
-# GUI Formatting
-bg_color = 'white'          #background color
-fontname = 'calibri'        #font name
-fsize_s = 16                #small font fize
-fsize_l = 18                #large font size
-fsize_t = 24                #title font size
-frmt = [bg_color, fontname,fsize_s,fsize_l,fsize_t]    # Pack Formatting into list
-
 # Define Images
 title_img = os.path.join(home,'TMAnalysis','GUI','Images','TitleHeader.png') # Set the title image path
 logo_img = os.path.join(home,'TMAnalysis','GUI','Images','NasaLogo.png')     # Set the logo image path
@@ -50,7 +42,7 @@ logo_img = os.path.join(home,'TMAnalysis','GUI','Images','NasaLogo.png')     # S
 class TMAnalysis_GUI:
     #Initialize
     def __init__(self):
-        global window, frmt
+        global window
         #Create Background Window
         window = tk.Tk()
         window.title("TMAnalysis")
@@ -67,7 +59,7 @@ class TMAnalysis_GUI:
 
         #Add the Title
         self.img_hdr = ImageTk.PhotoImage(Image.open(title_img))
-        self.panel_hdr = tk.Label(window, image = self.img_hdr, bg = bg_color)
+        self.panel_hdr = tk.Label(window, image = self.img_hdr, bg = 'white')
         self.panel_hdr.place(
                             anchor = 'n', 
                             relx = self.Placement['HomePage']['Title'][0], 
@@ -76,7 +68,7 @@ class TMAnalysis_GUI:
 
         #Add the NASA Logo
         self.img_nasa = ImageTk.PhotoImage(Image.open(logo_img))
-        self.panel_nasa = tk.Label(window, image = self.img_nasa, bg = bg_color)
+        self.panel_nasa = tk.Label(window, image = self.img_nasa, bg = 'white')
         self.panel_nasa.place(
                             anchor = 'e',
                             relx = self.Placement['HomePage']['Logo'][0], 
@@ -103,7 +95,7 @@ class TMAnalysis_GUI:
         DeletePages(self,'FileSelection')
 
         # Build the User Options Page
-        UserOptions(self,window,frmt)
+        UserOptions(self,window)
 
     # -- Begin Analysis
     def begin_analysis(self):
@@ -116,7 +108,7 @@ class TMAnalysis_GUI:
             # -- Yield
             if hasattr(self,"yield_table") == True:
                 yield_vals = []
-                table_data = self.yield_table.get_sheet_data(return_copy = False, get_header = False, get_index = False)
+                table_data = self.yield_table.data
                 for k in range(len(table_data)):
                     try:
                        float(table_data[k][0])
@@ -127,7 +119,7 @@ class TMAnalysis_GUI:
                     user_options['Yield Offset'] = yield_vals
 
             # -- Additional Information (all tests)
-            self.add_info = table_data = self.test_info_extra.get_sheet_data(return_copy = False, get_header = False, get_index = False)
+            self.add_info = table_data = self.test_info_extra.data
    
             # Delete Previous Page
             DeletePages(self,'UserOptions')
@@ -155,7 +147,7 @@ class TMAnalysis_GUI:
         self.Raw, self.Analysis, self.dir, err_flag, msg, self.Analysis_file = TMAnalysis(self.raw_files[self.fcount], 0, self.user_opt)
 
         if err_flag == 0:
-            GeneralAnalysis(self, window, frmt)
+            GeneralAnalysis(self, window)
 
         else:
             # Raw Data incorrect - display error message and continue
@@ -164,12 +156,11 @@ class TMAnalysis_GUI:
 
     # -- Create the Stage Table and Stage Plot
     def create_stage_table(self):
-        Build_Stage_Table(self, window, frmt)
+        Build_Stage_Table(self, window)
 
     # -- Create The Properties Table and Properties Plot
     def create_prop_table(self):
-        
-        Build_Prop_Table(self, window, frmt)
+        Build_Prop_Table(self, window)
 
     # -- Reanalyze the raw data from user defined stages
     def reanalyze_stages(self):
@@ -297,7 +288,7 @@ class TMAnalysis_GUI:
                 self.Analysis = Analysis_old
            
             # Rebuild Stage Table Page
-            Build_Stage_Table(self, window, frmt)
+            Build_Stage_Table(self, window)
 
     # -- Insert Stage Above In Stage Table
     def insert_stage_above(self):
@@ -315,12 +306,23 @@ class TMAnalysis_GUI:
 
         # Recreate the Stage Table
         hdrs =  ['Stage Name', 'Stage Type', 'Control Mode', 'Target Strain-'+dir, 'Target Stress-'+dir, 'Target Time', 'End Index']
-        self.stage_table = tksheet.Sheet(window, total_rows = len(Analysis['Stages']['End Index']['Value'])+1, total_columns = 7, 
-                                    headers = ['Stage Name', 'Stage Type', 'Control Mode', 'Target Strain [' + Raw['Raw Data']['Units']['Strain']['Value'] + ']', 
+        self.stage_table = tksheet.Sheet(
+                                        window, 
+                                        total_rows = len(Analysis['Stages']['End Index']['Value'])+1, 
+                                        total_columns = 7, 
+                                        headers = ['Stage Name', 'Stage Type', 'Control Mode', 'Target Strain [' + Raw['Raw Data']['Units']['Strain']['Value'] + ']', 
                                                'Target Stress [' + Raw['Raw Data']['Units']['Stress']['Value'] + ']', 'End Time [' + Raw['Raw Data']['Units']['Time']['Value'] + ']', 
                                                'End Index'],
-                                    width = 790, height = 550, show_x_scrollbar = False, show_y_scrollbar = True)
-        self.stage_table.place(anchor = 'n', relx = 0.26, rely = 0.30)
+                                        width = self.Placement['StageTable']['Sheet1'][2], 
+                                        height = self.Placement['StageTable']['Sheet1'][3], 
+                                        show_x_scrollbar = False, 
+                                        show_y_scrollbar = True
+                                        )
+        self.stage_table.place(
+                            anchor = 'n', 
+                            relx = self.Placement['StageTable']['Sheet1'][0], 
+                            rely = self.Placement['StageTable']['Sheet1'][1]
+                            )
 
         # Set Stage Table Drop Down Lists
         for k in range(len(Analysis['Stages']['End Index']['Value'])+1):
@@ -542,7 +544,7 @@ class TMAnalysis_GUI:
             self.Analysis = Analysis_old
 
         # Rebuild Stage Table Page
-        Build_Stage_Table(self, window, frmt)
+        Build_Stage_Table(self, window)
 
     # -- Update the Stage Table if a Start Point was Changed
     def update_table_end(self, event):
@@ -625,7 +627,7 @@ class TMAnalysis_GUI:
             self.Analysis = Analysis_old
 
         # Rebuild Stage Table Page
-        Build_Stage_Table(self, window, frmt)
+        Build_Stage_Table(self, window)
 
     # -- Move Point Right on Stage Table
     def move_right(self,event):
@@ -826,7 +828,7 @@ class TMAnalysis_GUI:
 
             # Replot the Tensile Analysis
             from GUI.TensilePropertyPlot import TensilePropertyPlot
-            TensilePropertyPlot(self, window, frmt)
+            TensilePropertyPlot(self, window)
 
         if self.Analysis['Stages']['Stage Type']['Value'][0] == 'Compressive Loading':
             # Set the Proportional Limit and Proportional Limit Strain
@@ -840,7 +842,7 @@ class TMAnalysis_GUI:
 
             # Replot the Tensile Analysis
             from GUI.CompressivePropertyPlot import CompressivePropertyPlot
-            CompressivePropertyPlot(self, window, frmt)
+            CompressivePropertyPlot(self, window)
 
         if self.Analysis['Stages']['Stage Type']['Value'][0] == 'Shear Loading':
             # Set the Proportional Limit and Proportional Limit Strain
@@ -854,7 +856,7 @@ class TMAnalysis_GUI:
 
             # Replot the Tensile Analysis
             from GUI.ShearPropertyPlot import ShearPropertyPlot
-            ShearPropertyPlot(self, window, frmt)
+            ShearPropertyPlot(self, window)
 
         # Reanalyze the stages
         self.reanalyze_stages()
@@ -863,7 +865,7 @@ class TMAnalysis_GUI:
         self.create_prop_table()
 
         from GUI.PropDisplay import PropDisplay
-        PropDisplay(self, window, frmt)
+        PropDisplay(self, window)
 
     # -- Property Table Popupmenu Button - Editing Modulus Limit
     def edit_modulus(self):
@@ -995,7 +997,7 @@ class TMAnalysis_GUI:
 
             # Replot the Tensile Analysis
             from GUI.TensilePropertyPlot import TensilePropertyPlot
-            TensilePropertyPlot(self, window, frmt)
+            TensilePropertyPlot(self, window)
 
         if self.Analysis['Stages']['Stage Type']['Value'][0] == 'Compressive Loading':
             # Update the properties table
@@ -1004,7 +1006,7 @@ class TMAnalysis_GUI:
 
             # Replot the Compressive Analysis
             from GUI.CompressivePropertyPlot import CompressivePropertyPlot
-            CompressivePropertyPlot(self, window, frmt)
+            CompressivePropertyPlot(self, window)
 
         if self.Analysis['Stages']['Stage Type']['Value'][0] == 'Shear Loading':
             # Update the properties table
@@ -1013,7 +1015,7 @@ class TMAnalysis_GUI:
 
             # Replot the Shear Analysis
             from GUI.ShearPropertyPlot import ShearPropertyPlot
-            ShearPropertyPlot(self, window, frmt)
+            ShearPropertyPlot(self, window)
 
         # Reanalyze the stages
         self.reanalyze_stages()
@@ -1022,7 +1024,7 @@ class TMAnalysis_GUI:
         self.create_prop_table()
 
         from GUI.PropDisplay import PropDisplay
-        PropDisplay(self, window, frmt)
+        PropDisplay(self, window)
 
 
     # -- Property Table Popupmenu Button - Editing Creeo Zones
@@ -1350,7 +1352,7 @@ class TMAnalysis_GUI:
         # Replot the Creep Analysis
         self.clicked_creep = 0
         from GUI.CreepPropertyPlot import CreepPropertyPlot
-        CreepPropertyPlot(self, window, frmt)
+        CreepPropertyPlot(self, window)
 
         # Reanalyze the stages
         self.reanalyze_stages()
@@ -1360,7 +1362,7 @@ class TMAnalysis_GUI:
         self.prop_opt.set('Creep Analysis') 
 
         from GUI.PropDisplay import PropDisplay
-        PropDisplay(self, window, frmt)
+        PropDisplay(self, window)
 
     # -- Continue analysis or save files
     def continue_analysis(self):
@@ -1465,7 +1467,7 @@ class TMAnalysis_GUI:
 
             if err_flag == 0:
                 from GUI.GeneralAnalysis import GeneralAnalysis
-                GeneralAnalysis(self, window, frmt)
+                GeneralAnalysis(self, window)
 
             else:
                 # Raw Data incorrect - display error message and continue
@@ -1482,7 +1484,7 @@ class TMAnalysis_GUI:
 
             # Build the Analysis Module Entry Point
             from GUI.FileSelection import FileSelection
-            FileSelection(self,window,frmt)
+            FileSelection(self,window)
 
 #Call the GUI
 TMAnalysis_GUI()

@@ -10,18 +10,18 @@
 #       frmt    GUI formatting
 #
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------
-def PropDisplay(self, window, frmt):
+def PropDisplay(self, window):
     # Import modules
     import tkinter as tk
-    import tkinter.font as tkFont
+    from tkinter import ttk
     import tksheet
 
     # Import Functions
-    from TMAnalysis.GUI.CompressivePropertyPlot import CompressivePropertyPlot
-    from TMAnalysis.GUI.CreepPropertyPlot import CreepPropertyPlot
-    from TMAnalysis.GUI.RelaxationPropertyPlot import RelaxationPropertyPlot
-    from TMAnalysis.GUI.ShearPropertyPlot import ShearPropertyPlot
-    from TMAnalysis.GUI.TensilePropertyPlot import TensilePropertyPlot
+    from GUI.CompressivePropertyPlot import CompressivePropertyPlot
+    from GUI.CreepPropertyPlot import CreepPropertyPlot
+    from GUI.RelaxationPropertyPlot import RelaxationPropertyPlot
+    from GUI.ShearPropertyPlot import ShearPropertyPlot
+    from GUI.TensilePropertyPlot import TensilePropertyPlot
 
     # Delete any existing tables
     # -- Delete Previous Proprties Table
@@ -35,7 +35,7 @@ def PropDisplay(self, window, frmt):
         self.canvas.get_tk_widget().destroy()
 
     # Get selcted option
-    prop = self.prop_opt.get()
+    prop = self.prop_opt_menu.get()
 
     # Unpack Data
     Raw = self.Raw
@@ -47,27 +47,6 @@ def PropDisplay(self, window, frmt):
     if dir == '22':
         diam_dir= '22'
         pr_dir = '12'
-
-    # Set Table Properties
-    self.table_x = 0.175    # Property Table X Position
-    self.table_y = 0.4      # Property Table Y Position
-    self.table_w = 480      # Property Table Width
-    self.table_h = 500      # Property Table Width
-
-    # Set Plot Properties
-    plot_menu_x = 0.75      # Plot Menu X Position
-    plot_menu_y = 0.25      # Plot Menu Y Position
-    plot_btn_x = 0.85       # Plot Button X Position
-    plot_btn_y = 0.25       # Plot Button Y Position
-    btn_width = 75          # Plot Button Width
-    self.plt_x = 0.75       # Property Plot X Position
-    self.plt_y = 0.275      # Property Plot Y Position
-    self.tool_x = 0.845     # Property Plot Toolbar X Position
-    self.tool_y = 0.975     # Property Plot Toolbar X Position
-
-    # Set General Properties
-    self.cali12= tkFont.Font(family='Calibri', # Font Name
-                                size=12)          # Font Size
 
     # TENSILE PROPERTIES
     # Create the Tensile Properties Table
@@ -123,10 +102,21 @@ def PropDisplay(self, window, frmt):
             unit_list.append(unit_list_all[i])
 
         # Create the Table
-        self.prop_table = tksheet.Sheet(window, total_rows = len(prop_list), total_columns = 3, 
-                            headers = ['Property', 'Value','Units'],
-                            width = self.table_w, height = self.table_h, show_x_scrollbar = False, show_y_scrollbar = False)
-        self.prop_table.place(anchor = 'n', relx = self.table_x, rely = self.table_y)
+        self.prop_table = tksheet.Sheet(
+                                        window, 
+                                        total_rows = len(prop_list), 
+                                        total_columns = 3, 
+                                        headers = ['Property', 'Value','Units'],
+                                        width = self.Placement['PropTable']['Sheet1'][2], 
+                                        height = self.Placement['PropTable']['Sheet1'][3], 
+                                        show_x_scrollbar = False, 
+                                        show_y_scrollbar = False
+                                        )
+        self.prop_table.place(
+                            anchor = 'n', 
+                            relx = self.Placement['PropTable']['Sheet1'][0], 
+                            rely = self.Placement['PropTable']['Sheet1'][1]
+                            )
 
         # Add additional buttons to table menu
         self.prop_table.enable_bindings("right_click_popup_menu", 'single_select','cell_select', 'column_select','row_select')
@@ -137,9 +127,9 @@ def PropDisplay(self, window, frmt):
             self.prop_table.popup_menu_add_command('Edit Modulus', self.edit_modulus, table_menu = True, index_menu = True, header_menu = True)
 
         # Format Columns
-        self.prop_table.column_width(column = 0, width = 280, redraw = True)
-        self.prop_table.column_width(column = 1, width = 80, redraw = True)
-        self.prop_table.column_width(column = 2, width = 80, redraw = True)
+        self.prop_table.column_width(column = 0, width = self.Placement['PropTable']['Sheet1'][4], redraw = True)
+        self.prop_table.column_width(column = 1, width = self.Placement['PropTable']['Sheet1'][5], redraw = True)
+        self.prop_table.column_width(column = 2, width = self.Placement['PropTable']['Sheet1'][6], redraw = True)
 
         # Get Plotting Option
         opt_cands = ['Stress vs Strain','Poissons Ratio','Strain Rate','Stress Rate']
@@ -157,18 +147,35 @@ def PropDisplay(self, window, frmt):
         self.prop_plot_opt = tk.StringVar(window)
         if len(opts) > 0:
             # Create the option menu
-            self.prop_plot_opt.set(opts[0]) 
-            self.prop_plot_menu = tk.OptionMenu(window, self.prop_plot_opt, *opts) 
-            self.prop_plot_menu.place(anchor = 'e', relx = plot_menu_x, rely = plot_menu_y)
-            self.prop_plot_menu.configure(font = self.cali12)
+            self.prop_plot_opt = ttk.Combobox(
+                                    window,
+                                    values=opts,
+                                    style="Modern.TCombobox",
+                                    state="readonly",
+                                    )
+            self.prop_plot_opt.place(
+                                anchor='n', 
+                                relx = self.Placement['PropTable']['Combo2'][0], 
+                                rely = self.Placement['PropTable']['Combo2'][1]
+                                ) 
+            self.prop_plot_opt.set(opts[0])
                 
             # Create the button to plot
-            self.A2_btn5 = tk.Button(window, text = "Plot", command = lambda: TensilePropertyPlot(self, window, frmt), 
-                                    font = self.cali12, bg = 'light blue')
-            self.A2_btn5.place(anchor = 'e', relx = plot_btn_x, rely = plot_btn_y, width = btn_width)
+            self.A2_btn5 = ttk.Button(
+                                    window, 
+                                    text = "Plot", 
+                                    command = lambda: TensilePropertyPlot(self, window), 
+                                    style = 'Modern1.TButton',
+                                    width = self.Placement['PropTable']['Button2'][2]
+                                    )
+            self.A2_btn5.place(
+                            anchor = 'n', 
+                            relx = self.Placement['PropTable']['Button2'][0], 
+                            rely = self.Placement['PropTable']['Button2'][1]
+                            )
 
             # Plot
-            TensilePropertyPlot(self, window, frmt)
+            TensilePropertyPlot(self, window)
 
     # COMPRESSIVE PROPERTIES
     # Create the Compressive Properties Table
@@ -239,9 +246,9 @@ def PropDisplay(self, window, frmt):
             self.prop_table.popup_menu_add_command('Edit Modulus', self.edit_modulus, table_menu = True, index_menu = True, header_menu = True)
 
         # Format Columns
-        self.prop_table.column_width(column = 0, width = 280, redraw = True)
-        self.prop_table.column_width(column = 1, width = 80, redraw = True)
-        self.prop_table.column_width(column = 2, width = 80, redraw = True)
+        self.prop_table.column_width(column = 0, width = self.Placement['PropTable']['Sheet1'][4], redraw = True)
+        self.prop_table.column_width(column = 1, width = self.Placement['PropTable']['Sheet1'][5], redraw = True)
+        self.prop_table.column_width(column = 2, width = self.Placement['PropTable']['Sheet1'][6], redraw = True)
 
         # Get Plotting Option
         opt_cands = ['Stress vs Strain','Poissons Ratio','Strain Rate','Stress Rate']
@@ -259,18 +266,35 @@ def PropDisplay(self, window, frmt):
         self.prop_plot_opt = tk.StringVar(window)
         if len(opts) > 0:
             # Create the option menu
-            self.prop_plot_opt.set(opts[0]) 
-            self.prop_plot_menu = tk.OptionMenu(window, self.prop_plot_opt, *opts) 
-            self.prop_plot_menu.place(anchor = 'e', relx = plot_menu_x, rely = plot_menu_y)
-            self.prop_plot_menu.configure(font = self.cali12)
-
+            self.prop_plot_opt = ttk.Combobox(
+                                    window,
+                                    values=opts,
+                                    style="Modern.TCombobox",
+                                    state="readonly",
+                                    )
+            self.prop_plot_opt.place(
+                                anchor='e', 
+                                relx = self.Placement['PropTable']['Combo2'][0], 
+                                rely = self.Placement['PropTable']['Combo2'][1]
+                                ) 
+            self.prop_plot_opt.set(opts[0])
+                
             # Create the button to plot
-            self.A2_btn5 = tk.Button(window, text = "Plot", command = lambda: CompressivePropertyPlot(self,window,frmt), 
-                                    font = ('Calibiri', 12), bg = 'light blue')
-            self.A2_btn5.place(anchor = 'e', relx = plot_btn_x, rely = plot_btn_y, width = btn_width)
+            self.A2_btn5 = ttk.Button(
+                                    window, 
+                                    text = "Plot", 
+                                    command = lambda: TensilePropertyPlot(self, window), 
+                                    style = 'Modern1.TButton',
+                                    width = self.Placement['PropTable']['Button2'][2]
+                                    )
+            self.A2_btn5.place(
+                            anchor = 'n', 
+                            relx = self.Placement['PropTable']['Button2'][0], 
+                            rely = self.Placement['PropTable']['Button2'][1]
+                            )
 
             # Plot
-            CompressivePropertyPlot(self,window,frmt)
+            CompressivePropertyPlot(self,window)
 
     # SHEAR PROPERTIES
     # Create the Shear Properties Table
@@ -339,9 +363,9 @@ def PropDisplay(self, window, frmt):
             self.prop_table.popup_menu_add_command('Edit Modulus', self.edit_modulus, table_menu = True, index_menu = True, header_menu = True)
 
         # Format Columns
-        self.prop_table.column_width(column = 0, width = 280, redraw = True)
-        self.prop_table.column_width(column = 1, width = 80, redraw = True)
-        self.prop_table.column_width(column = 2, width = 80, redraw = True)
+        self.prop_table.column_width(column = 0, width = self.Placement['PropTable']['Sheet1'][4], redraw = True)
+        self.prop_table.column_width(column = 1, width = self.Placement['PropTable']['Sheet1'][5], redraw = True)
+        self.prop_table.column_width(column = 2, width = self.Placement['PropTable']['Sheet1'][6], redraw = True)
 
         # Get Plotting Option
         opt_cands = ['Stress vs Strain','Poissons Ratio','Strain Rate','Stress Rate']
@@ -357,18 +381,35 @@ def PropDisplay(self, window, frmt):
         self.prop_plot_opt = tk.StringVar(window)
         if len(opts) > 0:
             # Create the option menu
-            self.prop_plot_opt.set(opts[0]) 
-            self.prop_plot_menu = tk.OptionMenu(window, self.prop_plot_opt, *opts) 
-            self.prop_plot_menu.place(anchor = 'e', relx = plot_menu_x, rely = plot_menu_y)
-            self.prop_plot_menu.configure(font = self.cali12)
-
-            # Creat the button to plot
-            self.A2_btn5 = tk.Button(window, text = "Plot", command = lambda: ShearPropertyPlot(self,window,frmt), 
-                                    font = ('Calibiri', 12), bg = 'light blue')
-            self.A2_btn5.place(anchor = 'e', relx = plot_btn_x, rely = plot_btn_y, width = btn_width)
-
+            self.prop_plot_opt = ttk.Combobox(
+                                    window,
+                                    values=opts,
+                                    style="Modern.TCombobox",
+                                    state="readonly",
+                                    )
+            self.prop_plot_opt.place(
+                                anchor='e', 
+                                relx = self.Placement['PropTable']['Combo2'][0], 
+                                rely = self.Placement['PropTable']['Combo2'][1]
+                                ) 
+            self.prop_plot_opt.set(opts[0])
+                
+            # Create the button to plot
+            self.A2_btn5 = ttk.Button(
+                                    window, 
+                                    text = "Plot", 
+                                    command = lambda: TensilePropertyPlot(self, window), 
+                                    style = 'Modern1.TButton',
+                                    width = self.Placement['PropTable']['Button2'][2]
+                                    )
+            self.A2_btn5.place(
+                            anchor = 'n', 
+                            relx = self.Placement['PropTable']['Button2'][0], 
+                            rely = self.Placement['PropTable']['Button2'][1]
+                            )
+            
             # Plot
-            ShearPropertyPlot(self,window,frmt)
+            ShearPropertyPlot(self,window)
 
     # RELAXATION PROPERTIES
     # Create the Relaxation Properties Table
@@ -397,9 +438,9 @@ def PropDisplay(self, window, frmt):
         self.prop_table.place(anchor = 'n', relx = self.table_x, rely = self.table_y)
 
         # Format Columns
-        self.prop_table.column_width(column = 0, width = 280, redraw = True)
-        self.prop_table.column_width(column = 1, width = 80, redraw = True)
-        self.prop_table.column_width(column = 2, width = 80, redraw = True)
+        self.prop_table.column_width(column = 0, width = self.Placement['PropTable']['Sheet1'][4], redraw = True)
+        self.prop_table.column_width(column = 1, width = self.Placement['PropTable']['Sheet1'][5], redraw = True)
+        self.prop_table.column_width(column = 2, width = self.Placement['PropTable']['Sheet1'][6], redraw = True)
 
         # Get Plotting Option
         opt_cands = ['Relaxation Stress vs Strain','Relaxation Strain vs Time','Relaxation Stress vs Time']
@@ -411,18 +452,35 @@ def PropDisplay(self, window, frmt):
         self.prop_plot_opt = tk.StringVar(window)
         if len(opts) > 0:
             # Create the option menu
-            self.prop_plot_opt.set(opts[2]) 
-            self.prop_plot_menu = tk.OptionMenu(window, self.prop_plot_opt, *opts) 
-            self.prop_plot_menu.place(anchor = 'e', relx = plot_menu_x, rely = plot_menu_y)
-            self.prop_plot_menu.configure(font = self.cali12)
-
+            self.prop_plot_opt = ttk.Combobox(
+                                    window,
+                                    values=opts,
+                                    style="Modern.TCombobox",
+                                    state="readonly",
+                                    )
+            self.prop_plot_opt.place(
+                                anchor='e', 
+                                relx = self.Placement['PropTable']['Combo2'][0], 
+                                rely = self.Placement['PropTable']['Combo2'][1]
+                                ) 
+            self.prop_plot_opt.set(opts[0])
+                
             # Create the button to plot
-            self.A2_btn5 = tk.Button(window, text = "Plot", command = lambda:RelaxationPropertyPlot(self, window,frmt), 
-                                    font = ('Calibiri', 12), bg = 'light blue')
-            self.A2_btn5.place(anchor = 'e', relx = plot_btn_x, rely = plot_btn_y, width = btn_width)
-
+            self.A2_btn5 = ttk.Button(
+                                    window, 
+                                    text = "Plot", 
+                                    command = lambda: TensilePropertyPlot(self, window), 
+                                    style = 'Modern1.TButton',
+                                    width = self.Placement['PropTable']['Button2'][2]
+                                    )
+            self.A2_btn5.place(
+                            anchor = 'n', 
+                            relx = self.Placement['PropTable']['Button2'][0], 
+                            rely = self.Placement['PropTable']['Button2'][1]
+                            )
+            
             # Plot
-            RelaxationPropertyPlot(self,window,frmt)
+            RelaxationPropertyPlot(self,window)
 
     # CREEP PROPERTIES
     # Create the Creep Properties Table
@@ -444,9 +502,9 @@ def PropDisplay(self, window, frmt):
         self.prop_table.place(anchor = 'n', relx = self.table_x, rely = self.table_y)
 
         # Format Columns
-        self.prop_table.column_width(column = 0, width = 280, redraw = True)
-        self.prop_table.column_width(column = 1, width = 80, redraw = True)
-        self.prop_table.column_width(column = 2, width = 80, redraw = True)
+        self.prop_table.column_width(column = 0, width = self.Placement['PropTable']['Sheet1'][4], redraw = True)
+        self.prop_table.column_width(column = 1, width = self.Placement['PropTable']['Sheet1'][5], redraw = True)
+        self.prop_table.column_width(column = 2, width = self.Placement['PropTable']['Sheet1'][6], redraw = True)
 
         # Get Plotting Option
         opt_cands = ['Creep Stress vs Strain','Creep Strain vs Time','Creep Stress vs Time']
@@ -458,18 +516,35 @@ def PropDisplay(self, window, frmt):
         self.prop_plot_opt = tk.StringVar(window)
         if len(opts) > 0:
             # Create the option menu
-            self.prop_plot_opt.set(opts[1]) 
-            self.prop_plot_menu = tk.OptionMenu(window, self.prop_plot_opt, *opts) 
-            self.prop_plot_menu.place(anchor = 'e', relx = plot_menu_x, rely = plot_menu_y)
-            self.prop_plot_menu.configure(font = self.cali12)
-
+            self.prop_plot_opt = ttk.Combobox(
+                                    window,
+                                    values=opts,
+                                    style="Modern.TCombobox",
+                                    state="readonly",
+                                    )
+            self.prop_plot_opt.place(
+                                anchor='e', 
+                                relx = self.Placement['PropTable']['Combo2'][0], 
+                                rely = self.Placement['PropTable']['Combo2'][1]
+                                ) 
+            self.prop_plot_opt.set(opts[0])
+                
             # Create the button to plot
-            self.A2_btn5 = tk.Button(window, text = "Plot", command = lambda: CreepPropertyPlot(self, window, frmt), 
-                                    font = ('Calibiri', 12), bg = 'light blue')
-            self.A2_btn5.place(anchor = 'e', relx = plot_btn_x, rely = plot_btn_y, width = btn_width)
-
+            self.A2_btn5 = ttk.Button(
+                                    window, 
+                                    text = "Plot", 
+                                    command = lambda: TensilePropertyPlot(self, window), 
+                                    style = 'Modern1.TButton',
+                                    width = self.Placement['PropTable']['Button2'][2]
+                                    )
+            self.A2_btn5.place(
+                            anchor = 'n', 
+                            relx = self.Placement['PropTable']['Button2'][0], 
+                            rely = self.Placement['PropTable']['Button2'][1]
+                            )
+            
             # Plot
-            CreepPropertyPlot(self, window, frmt)
+            CreepPropertyPlot(self, window)
 
     # Populate the properties table             
     ct_yld = 0 # Counter for additional yeild offsets to display (Custom Analysis Values)

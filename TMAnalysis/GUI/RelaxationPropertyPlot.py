@@ -7,10 +7,9 @@
 #   INPUTS:
 #       self    structure containing all GUI information
 #       window  window
-#       frmt    GUI formatting
 #
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------
-def RelaxationPropertyPlot(self, window, frmt):
+def RelaxationPropertyPlot(self, window):
     # Import Modules
     from matplotlib.figure import Figure
     from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
@@ -18,20 +17,14 @@ def RelaxationPropertyPlot(self, window, frmt):
     from matplotlib.ticker import FormatStrFormatter, ScalarFormatter
     import numpy as np
 
-    # Unpack frmt
-    bg_color = frmt[0]
-    fontname = frmt[1]           
-    fsize_s = frmt[2]
-    fsize_l = frmt[3]
-    fsize_t = frmt[4]
-
     #  Delete the canvas if it exists
     if hasattr(self, 'canvas'):
         self.toolbar.destroy()
         self.canvas.get_tk_widget().destroy()
 
     # Create Figure
-    self.fig = Figure(figsize=(6,4.25), dpi = 125)
+    self.fig = Figure(figsize=(self.Placement['PropTable']['Figure1'][2],self.Placement['PropTable']['Figure1'][3]), dpi = self.Placement['PropTable']['Figure1'][4])
+    self.fig.subplots_adjust(left=0.1, right=0.975, top=0.95, bottom=0.15)
     self.plot1 = self.fig.add_subplot(111)
 
     # Get the option
@@ -102,8 +95,16 @@ def RelaxationPropertyPlot(self, window, frmt):
     self.toolbar = NavigationToolbar2Tk(self.canvas, window)
     self.toolbar.update()
     #--Format Toolbar
-    self.toolbar.config(bg=bg_color)
-    self.toolbar._message_label.config(background=bg_color)
-    self.toolbar.place(anchor = 'e', relx = self.tool_x, rely = self.tool_y)
+    self.toolbar.config(bg='white')
+    self.toolbar._message_label.config(background='white')
+    self.toolbar.place(
+                    anchor = 'n', 
+                    relx = self.Placement['PropTable']['Toolbar1'][0], 
+                    rely = self.Placement['PropTable']['Toolbar1'][1]
+                    )
     #--Add the figure to the GUI
-    self.canvas.get_tk_widget().place(anchor = 'n', relx = self.plt_x, rely = self.plt_y)
+    self.canvas.get_tk_widget().place(
+                                    anchor = 'n', 
+                                    relx = self.Placement['PropTable']['Figure1'][0], 
+                                    rely = self.Placement['PropTable']['Figure1'][1]
+                                    )

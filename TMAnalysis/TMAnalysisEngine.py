@@ -24,6 +24,19 @@ def TMAnalysis(Raw_file, Analysis_file, user_opts):
     import numpy as np
     import matplotlib.pyplot as plt
 
+    # Import Functions
+    from Analysis.CompressiveLoading_Analysis import CompressiveLoading_Analysis
+    from Analysis.CompressiveUnloading_Analysis import CompressiveUnloading_Analysis
+    from Analysis.Creep_Analysis import Creep_Analysis
+    from Analysis.Relaxation_Analysis import Relaxation_Analysis
+    from Analysis.ShearLoading_Analysis import ShearLoading_Analysis
+    from Analysis.ShearUnloading_Analysis import ShearUnloading_Analysis
+    from Analysis.TensileLoading_Analysis import TensileLoading_Analysis
+    from Analysis.TensileUnloading_Analysis import TensileUnloading_Analysis
+    from Segmentation.AssistedSegmentation import AssistedSegmentation
+    from Segmentation.DefinedSegmentation import DefinedSegmentation
+    from Segmentation.RawSegmentation import RawSegmentation
+
     # Set the plotting option
     # -- 0 - no plots
     # -- 1 - plots (for debugging/checking outside of GUI)
@@ -39,7 +52,7 @@ def TMAnalysis(Raw_file, Analysis_file, user_opts):
     # Open the Analysis File
     if Analysis_file == 0:
         # -- Open an empty Analysis File
-        f = open(os.path.join(os.getcwd(),'Templates','Analysis_Template.json'))
+        f = open(os.path.join(os.getcwd(),'TMAnalysis','Templates','Analysis_Template.json'))
     else:
         # -- Open an existing Analysis File
         f = open(Analysis_file)
@@ -118,17 +131,14 @@ def TMAnalysis(Raw_file, Analysis_file, user_opts):
         # -- Check if turn points are defined by the program
         if len(Analysis['Stages']['End Index']['Value']) > 0:
             # -- Call Defined Segmentation algorithm if user has them fully defined (i.e., Analysis file was input)
-            from Segmentation.DefinedSegmentation import DefinedSegmentation
             Raw, Analysis = DefinedSegmentation(Raw, Analysis, load_dir)
 
         elif Raw['Control Information']['Defined']['Value'] == True:
             # -- Call Assisted Segmentation algorithm if turn points are defined
-            from Segmentation.AssistedSegmentation import AssistedSegmentation
             Raw, Analysis = AssistedSegmentation(Raw, Analysis, load_dir)
 
         else:
             # -- Call Raw Segmentation algorithm if turn points are not defined
-            from Segmentation.RawSegmentation import RawSegmentation
             Raw, Analysis = RawSegmentation(Raw, Analysis, load_dir)
   
         # Plot the Stages
@@ -190,42 +200,34 @@ def TMAnalysis(Raw_file, Analysis_file, user_opts):
         for i in range(len(Analysis['Stages']['Stage Name']['Value'])):
             # -- Tensile Loading
             if Analysis['Stages']['Stage Type']['Value'][i] == 'Tensile Loading':
-                from Analysis.TensileLoading_Analysis import TensileLoading_Analysis
                 Raw, Analysis = TensileLoading_Analysis(Raw, Analysis, load_dir, i, user_opts, plot_opt)
 
             # -- Tensile Unloading
             if Analysis['Stages']['Stage Type']['Value'][i] == 'Tensile Unloading':
-                from Analysis.TensileUnloading_Analysis import TensileUnloading_Analysis
                 Raw, Analysis = TensileUnloading_Analysis(Raw, Analysis, load_dir, i, user_opts, plot_opt)
 
             # -- Compressive Loading
             if Analysis['Stages']['Stage Type']['Value'][i] == 'Compressive Loading':
-                from Analysis.CompressiveLoading_Analysis import CompressiveLoading_Analysis
                 Raw, Analysis = CompressiveLoading_Analysis(Raw, Analysis, load_dir, i, user_opts, plot_opt)
 
             # -- Compressive Unloading
             if Analysis['Stages']['Stage Type']['Value'][i] == 'Compressive Unloading':
-                from Analysis.CompressiveUnloading_Analysis import CompressiveUnloading_Analysis
                 Raw, Analysis = CompressiveUnloading_Analysis(Raw, Analysis, load_dir, i, user_opts, plot_opt)
 
             # -- Shear Loading
             if Analysis['Stages']['Stage Type']['Value'][i] == 'Shear Loading':
-                from Analysis.ShearLoading_Analysis import ShearLoading_Analysis
                 Raw, Analysis = ShearLoading_Analysis(Raw, Analysis, load_dir, i, user_opts, plot_opt)
 
             # -- Shear Unloading
             if Analysis['Stages']['Stage Type']['Value'][i] == 'Shear Unloading':
-                from Analysis.ShearUnloading_Analysis import ShearUnloading_Analysis
                 Raw, Analysis = ShearUnloading_Analysis(Raw, Analysis, load_dir, i, user_opts, plot_opt)
 
             # -- Creep
             if Analysis['Stages']['Stage Type']['Value'][i] == 'Creep':
-                from Analysis.Creep_Analysis import Creep_Analysis
                 Raw, Analysis = Creep_Analysis(Raw, Analysis, load_dir, i, user_opts, plot_opt)
 
             # -- Relaxation
             if Analysis['Stages']['Stage Type']['Value'][i] == 'Relaxation':
-                from Analysis.Relaxation_Analysis import Relaxation_Analysis
                 Raw, Analysis = Relaxation_Analysis(Raw, Analysis, load_dir, i, user_opts, plot_opt)
             
         msg = 'Analysis Complete'

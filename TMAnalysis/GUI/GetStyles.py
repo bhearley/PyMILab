@@ -33,6 +33,39 @@ def GetStyles(self):
                         background=[("active", "#428bca")]
                 )
     
+    # Checkbutton
+    self.style.configure(
+                        "TCheckbutton",
+                        focuscolor='none',
+                        padding=10,               
+                        font=("Segoe UI", 14),     
+                        foreground="black",      
+                        background="white"
+                        )
+    
+    # Combo Box Style
+    self.style.configure(
+                        "Modern.TCombobox",
+                        fieldbackground="white",   
+                        background="white",        
+                        foreground="black",        
+                        bordercolor="#cccccc",
+                        lightcolor="#dddddd",
+                        darkcolor="#aaaaaa",
+                        borderwidth=1,
+                        relief="flat",
+                        padding=5
+                        )
+    
+    self.style.map(
+                        "Modern.TCombobox",
+                        fieldbackground=[("readonly", "white"), ("active", "white")], 
+                        foreground=[("readonly", "black"), ("active", "black")],  
+                        background=[("readonly", "white"), ("active", "white")],  
+                        selectbackground=[("active", "white"), ("readonly", "white")],  
+                        selectforeground=[("active", "black"), ("readonly", "black")]  
+                 )
+    
     # Text
     # -- Label 1
     self.style.configure(

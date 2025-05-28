@@ -7,24 +7,15 @@
 #   INPUTS:
 #       self    structure containing all GUI information
 #       window  window
-#       frmt    GUI formatting
 #
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------
-def Build_Prop_Table(self, window, frmt):  
+def Build_Prop_Table(self, window):  
     # Import Modules
     import tkinter as tk
-    import tkinter.font as tkFont
-    import tksheet
-
-    # Unpack frmt
-    bg_color = frmt[0]
-    fontname = frmt[1]           
-    fsize_s = frmt[2]
-    fsize_l = frmt[3]
-    fsize_t = frmt[4]
+    from tkinter import ttk
 
     # Import Functions
-    from TMAnalysis.GUI.PropDisplay import PropDisplay
+    from GUI.PropDisplay import PropDisplay
 
     # Delete any existing tables
     # -- Delete the stages table
@@ -77,16 +68,29 @@ def Build_Prop_Table(self, window, frmt):
         if "Creep" in self.Analysis['Stages']['Stage Type']['Value'][1]:
             options.append('Creep Analysis')
 
-    # Set the default value of the variable 
-    self.prop_opt = tk.StringVar(window) 
-    self.prop_opt.set(options[0]) 
-  
     # Create the option menu
-    self.prop_opt_menu = tk.OptionMenu(window, self.prop_opt, *options) 
-    self.prop_opt_menu.place(anchor = 'w', relx = 0.025, rely = 0.355)
-    self.prop_opt_menu.config(font = self.cali12)
+    self.prop_opt_menu = ttk.Combobox(
+                                    window,
+                                    values=options,
+                                    style="Modern.TCombobox",
+                                    state="readonly",
+                                    width=self.Placement['PropTable']['Combo1'][2]
+                                    )
+    self.prop_opt_menu.place(
+                        anchor='n', 
+                        relx = self.Placement['PropTable']['Combo1'][0], 
+                        rely = self.Placement['PropTable']['Combo1'][1]
+                        ) 
+    self.prop_opt_menu.set(options[0])
 
     # Create the button to get properties
-    self.A2_btn3 = tk.Button(window, text = "Get Properties", command = lambda:PropDisplay(self, window, frmt), 
-                            font = self.cali12, bg = 'light blue')
-    self.A2_btn3.place(anchor = 'w', relx = 0.25, rely = 0.355)
+    self.A2_btn3 = ttk.Button(
+                            window, 
+                            text = "Get Properties", 
+                            command = lambda:PropDisplay(self, window), 
+                            style = "Modern1.TButton")
+    self.A2_btn3.place(
+                    anchor = 'w', 
+                    relx = self.Placement['PropTable']['Button1'][0], 
+                    rely = self.Placement['PropTable']['Button1'][1]
+                    )
