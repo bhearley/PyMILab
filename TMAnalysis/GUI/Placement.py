@@ -21,7 +21,7 @@ def Placements(self, res):
     # 2560 x 1440
     if res == "2560x1440":
         # -- Home Page
-        Placement['HomePage']['Title'] = [0.5 ,0.025]
+        Placement['HomePage']['Title'] = [0.5 ,0.03]
         Placement['HomePage']['Logo'] = [0.999 ,0.06]
 
         # -- File Selection
@@ -71,7 +71,7 @@ def Placements(self, res):
     # 1536 x 960
     if res == "1536x960":
         # -- Home Page
-        Placement['HomePage']['Title'] = [0.5 ,0]
+        Placement['HomePage']['Title'] = [0.5 ,0.025]
         Placement['HomePage']['Logo'] = [0.999 ,0.06]
 
         # -- FileSelection
