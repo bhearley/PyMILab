@@ -14,7 +14,8 @@ def Placements(self, res):
                  'UserOptions':{},
                  'General':{},
                  'StageTable':{},
-                 'PropTable':{}
+                 'PropTable':{},
+                 'Notes':{}
                  }
     
     # 2560 x 1440
@@ -60,6 +61,12 @@ def Placements(self, res):
         Placement['PropTable']['Figure1'] = [0.75, 0.26, 9, 7.5, 125]
         Placement['PropTable']['Toolbar1'] = [0.775, 0.9]
 
+        # -- Notes
+        Placement['Notes']['Label1'] = [0.5, 0.3]
+        Placement['Notes']['Text1'] = [0.5, 0.35, 100, 8, 12]
+        Placement['Notes']['Button1'] = [0.965, 0.955]
+        Placement['Notes']['Button2'] = [0.0325, 0.955]
+
         
     # 1536 x 960
     if res == "1536x960":
@@ -103,6 +110,13 @@ def Placements(self, res):
         Placement['PropTable']['Button2'] = [0.875, 0.175, 6]
         Placement['PropTable']['Figure1'] = [0.75, 0.26, 6, 4.25, 125]
         Placement['PropTable']['Toolbar1'] = [0.775, 0.875]
+
+        # -- Notes
+        Placement['Notes']['Label1'] = [0.5, 0.3]
+        Placement['Notes']['Text1'] = [0.5, 0.35, 100, 8, 12]
+        Placement['Notes']['Button1'] = [0.94375, 0.9325]
+        Placement['Notes']['Button2'] = [0.05625, 0.9325]
+
     else:
         Placements(self, "1536x960")
 

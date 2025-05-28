@@ -2224,9 +2224,9 @@
       "Value": [
       ]
     },
-    "Shear Primary Creep-11": {
+    "Shear Primary Creep-12": {
       "Type": "dict",
-      "Description": "Data points in the primary creep zone in the 11-direction",
+      "Description": "Data points in the primary creep zone in the 12-direction",
       "Time": {
         "Type": "point array",
         "UnitsLink": "['General Information']['Units']['Time']",
@@ -2260,9 +2260,9 @@
         "Value": null
       }
     },
-    "Shear Primary Creep-22": {
+    "Shear Primary Creep-13": {
       "Type": "dict",
-      "Description": "Data points in the primary creep zone in the 22-direction",
+      "Description": "Data points in the primary creep zone in the 13-direction",
       "Time": {
         "Type": "point array",
         "UnitsLink": "['General Information']['Units']['Time']",
@@ -2296,9 +2296,9 @@
         "Value": null
       }
     },
-    "Shear Primary Creep-33": {
+    "Shear Primary Creep-23": {
       "Type": "dict",
-      "Description": "Data points in the primary creep zone in the 33-direction",
+      "Description": "Data points in the primary creep zone in the 23-direction",
       "Time": {
         "Type": "point array",
         "UnitsLink": "['General Information']['Units']['Time']",
@@ -2332,9 +2332,9 @@
         "Value": null
       }
     },
-    "Shear Secondary Creep-11": {
+    "Shear Secondary Creep-12": {
       "Type": "dict",
-      "Description": "Data points in the secondary (steady-state) creep zone in the 11-direction",
+      "Description": "Data points in the secondary (steady-state) creep zone in the 12-direction",
       "Time": {
         "Type": "point array",
         "UnitsLink": "['General Information']['Units']['Time']",
@@ -2368,9 +2368,9 @@
         "Value": null
       }
     },
-    "Shear Secondary Creep-22": {
+    "Shear Secondary Creep-13": {
       "Type": "dict",
-      "Description": "Data points in the secondary (steady-state) creep zone in the 22-direction",
+      "Description": "Data points in the secondary (steady-state) creep zone in the 13-direction",
       "Time": {
         "Type": "point array",
         "UnitsLink": "['General Information']['Units']['Time']",
@@ -2404,9 +2404,9 @@
         "Value": null
       }
     },
-    "Shear Secondary Creep-33": {
+    "Shear Secondary Creep-23": {
       "Type": "dict",
-      "Description": "Data points in the secondary (steady-state) creep zone in the 33-direction",
+      "Description": "Data points in the secondary (steady-state) creep zone in the 23-direction",
       "Time": {
         "Type": "point array",
         "UnitsLink": "['General Information']['Units']['Time']",
@@ -2440,9 +2440,9 @@
         "Value": null
       }
     },
-    "Shear Tertiary Creep-11": {
+    "Shear Tertiary Creep-12": {
       "Type": "dict",
-      "Description": "Data points in the tertiary creep zone in the 11-direction",
+      "Description": "Data points in the tertiary creep zone in the 12-direction",
       "Time": {
         "Type": "point array",
         "UnitsLink": "['General Information']['Units']['Time']",
@@ -2476,9 +2476,9 @@
         "Value": null
       }
     },
-    "Shear Tertiary Creep-22": {
+    "Shear Tertiary Creep-13": {
       "Type": "dict",
-      "Description": "Data points in the tertiary creep zone in the 22-direction",
+      "Description": "Data points in the tertiary creep zone in the 13-direction",
       "Time": {
         "Type": "point array",
         "UnitsLink": "['General Information']['Units']['Time']",
@@ -2512,9 +2512,9 @@
         "Value": null
       }
     },
-    "Shear Tertiary Creep-33": {
+    "Shear Tertiary Creep-23": {
       "Type": "dict",
-      "Description": "Data points in the tertiary creep zone in the 33-direction",
+      "Description": "Data points in the tertiary creep zone in the 23-direction",
       "Time": {
         "Type": "point array",
         "UnitsLink": "['General Information']['Units']['Time']",
@@ -4780,9 +4780,9 @@
         "Value": [
         ]
       },
-      "Shear Primary Creep-11": {
+      "Shear Primary Creep-12": {
         "Type": "dict",
-        "Description": "Data points in the primary creep zone in the 11-direction",
+        "Description": "Data points in the primary creep zone in the 12-direction",
         "Time": {
           "Type": "point array",
           "UnitsLink": "['General Information']['Units']['Time']",
@@ -4816,9 +4816,9 @@
           "Value": []
         }
       },
-      "Shear Primary Creep-22": {
+      "Shear Primary Creep-13": {
         "Type": "dict",
-        "Description": "Data points in the primary creep zone in the 22-direction",
+        "Description": "Data points in the primary creep zone in the 13-direction",
         "Time": {
           "Type": "point array",
           "UnitsLink": "['General Information']['Units']['Time']",
@@ -4852,9 +4852,9 @@
           "Value": []
         }
       },
-      "Shear Primary Creep-33": {
+      "Shear Primary Creep-23": {
         "Type": "dict",
-        "Description": "Data points in the primary creep zone in the 33-direction",
+        "Description": "Data points in the primary creep zone in the 23-direction",
         "Time": {
           "Type": "point array",
           "UnitsLink": "['General Information']['Units']['Time']",
@@ -4888,9 +4888,9 @@
           "Value": []
         }
       },
-      "Shear Secondary Creep-11": {
+      "Shear Secondary Creep-12": {
         "Type": "dict",
-        "Description": "Data points in the secondary (steady-state) creep zone in the 11-direction",
+        "Description": "Data points in the secondary (steady-state) creep zone in the 12-direction",
         "Time": {
           "Type": "point array",
           "UnitsLink": "['General Information']['Units']['Time']",
@@ -4924,9 +4924,9 @@
           "Value": []
         }
       },
-      "Shear Secondary Creep-22": {
+      "Shear Secondary Creep-13": {
         "Type": "dict",
-        "Description": "Data points in the secondary (steady-state) creep zone in the 22-direction",
+        "Description": "Data points in the secondary (steady-state) creep zone in the 13-direction",
         "Time": {
           "Type": "point array",
           "UnitsLink": "['General Information']['Units']['Time']",
@@ -4960,9 +4960,9 @@
           "Value": []
         }
       },
-      "Shear Secondary Creep-33": {
+      "Shear Secondary Creep-23": {
         "Type": "dict",
-        "Description": "Data points in the secondary (steady-state) creep zone in the 33-direction",
+        "Description": "Data points in the secondary (steady-state) creep zone in the 23-direction",
         "Time": {
           "Type": "point array",
           "UnitsLink": "['General Information']['Units']['Time']",
@@ -4996,9 +4996,9 @@
           "Value": []
         }
       },
-      "Shear Tertiary Creep-11": {
+      "Shear Tertiary Creep-12": {
         "Type": "dict",
-        "Description": "Data points in the tertiary creep zone in the 11-direction",
+        "Description": "Data points in the tertiary creep zone in the 12-direction",
         "Time": {
           "Type": "point array",
           "UnitsLink": "['General Information']['Units']['Time']",
@@ -5032,9 +5032,9 @@
           "Value": []
         }
       },
-      "Shear Tertiary Creep-22": {
+      "Shear Tertiary Creep-13": {
         "Type": "dict",
-        "Description": "Data points in the tertiary creep zone in the 22-direction",
+        "Description": "Data points in the tertiary creep zone in the 13-direction",
         "Time": {
           "Type": "point array",
           "UnitsLink": "['General Information']['Units']['Time']",
@@ -5068,9 +5068,9 @@
           "Value": []
         }
       },
-      "Shear Tertiary Creep-33": {
+      "Shear Tertiary Creep-23": {
         "Type": "dict",
-        "Description": "Data points in the tertiary creep zone in the 33-direction",
+        "Description": "Data points in the tertiary creep zone in the 23-direction",
         "Time": {
           "Type": "point array",
           "UnitsLink": "['General Information']['Units']['Time']",

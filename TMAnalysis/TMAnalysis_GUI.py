@@ -15,6 +15,7 @@ from PIL import ImageTk, Image
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox
+from tkinter import ttk
 import tksheet
 import scipy.stats
 import shutil
@@ -136,9 +137,6 @@ class TMAnalysis_GUI:
         # Store user options to self
         self.user_opt = user_options
 
-        # Import TMAnalysis
-        
-        
         # Load the Input File
         self.f= open(self.raw_files[self.fcount])  #Get the first file
         self.Raw = json.load(self.f) 
@@ -171,7 +169,7 @@ class TMAnalysis_GUI:
         dir = self.dir
 
         # Perform check on indices
-        table_data = self.stage_table.get_sheet_data(return_copy = False, get_header = False, get_index = False)
+        table_data = self.stage_table.data
         index_flag = 0
         for i in range(len(table_data)-1):
             if table_data[i][6] == '' or table_data[i+1][6] == '':
@@ -298,14 +296,13 @@ class TMAnalysis_GUI:
         dir = self.dir
 
         # Get the selected row
-        self.selected_row = list(self.stage_table.get_selected_rows())[0]
+        self.selected_row = self.stage_table.selected.row
 
         # Get the table data
-        table_data = self.stage_table.get_sheet_data(return_copy = False, get_header = False, get_index = False)
+        table_data = self.stage_table.data
         self.stage_table.destroy()
 
         # Recreate the Stage Table
-        hdrs =  ['Stage Name', 'Stage Type', 'Control Mode', 'Target Strain-'+dir, 'Target Stress-'+dir, 'Target Time', 'End Index']
         self.stage_table = tksheet.Sheet(
                                         window, 
                                         total_rows = len(Analysis['Stages']['End Index']['Value'])+1, 
@@ -349,13 +346,13 @@ class TMAnalysis_GUI:
                     self.stage_table.set_cell_data(i,j,table_data[i-1][j])
 
         # -- Format
-        self.stage_table.column_width(column = 0, width = 80, redraw = True)
-        self.stage_table.column_width(column = 1, width = 140, redraw = True)
-        self.stage_table.column_width(column = 2, width = 90, redraw = True)
-        self.stage_table.column_width(column = 3, width = 120, redraw = True)
-        self.stage_table.column_width(column = 4, width = 120, redraw = True)
-        self.stage_table.column_width(column = 5, width = 100, redraw = True)
-        self.stage_table.column_width(column = 6, width = 80, redraw = True)
+        self.stage_table.column_width(column = 0, width = self.Placement['StageTable']['Sheet1'][4], redraw = True)
+        self.stage_table.column_width(column = 1, width = self.Placement['StageTable']['Sheet1'][5], redraw = True)
+        self.stage_table.column_width(column = 2, width = self.Placement['StageTable']['Sheet1'][6], redraw = True)
+        self.stage_table.column_width(column = 3, width = self.Placement['StageTable']['Sheet1'][7], redraw = True)
+        self.stage_table.column_width(column = 4, width = self.Placement['StageTable']['Sheet1'][8], redraw = True)
+        self.stage_table.column_width(column = 5, width = self.Placement['StageTable']['Sheet1'][9], redraw = True)
+        self.stage_table.column_width(column = 6, width = self.Placement['StageTable']['Sheet1'][10], redraw = True)
 
         # -- Enable Bindings
         self.stage_table.enable_bindings(bindings = 'all')
@@ -378,20 +375,30 @@ class TMAnalysis_GUI:
         dir = self.dir
 
         # Get the selected row
-        self.selected_row = list(self.stage_table.get_selected_rows())[0]
+        self.selected_row = self.stage_table.selected.row
 
         # Get the table data
-        table_data = self.stage_table.get_sheet_data(return_copy = False, get_header = False, get_index = False)
+        table_data = self.stage_table.data
         self.stage_table.destroy()
 
         # Recreate the Stage Table
-        hdrs =  ['Stage Name', 'Stage Type', 'Control Mode', 'Target Strain-'+dir, 'Target Stress-'+dir, 'Target Time', 'End Index']
-        self.stage_table = tksheet.Sheet(window, total_rows = len(Analysis['Stages']['End Index']['Value'])+1, total_columns = 7, 
-                                    headers = ['Stage Name', 'Stage Type', 'Control Mode', 'Target Strain [' + Raw['Raw Data']['Units']['Strain']['Value'] + ']', 
+        self.stage_table = tksheet.Sheet(
+                                        window, 
+                                        total_rows = len(Analysis['Stages']['End Index']['Value'])+1, 
+                                        total_columns = 7, 
+                                        headers = ['Stage Name', 'Stage Type', 'Control Mode', 'Target Strain [' + Raw['Raw Data']['Units']['Strain']['Value'] + ']', 
                                                'Target Stress [' + Raw['Raw Data']['Units']['Stress']['Value'] + ']', 'End Time [' + Raw['Raw Data']['Units']['Time']['Value'] + ']', 
                                                'End Index'],
-                                    width = 790, height = 550, show_x_scrollbar = False, show_y_scrollbar = True)
-        self.stage_table.place(anchor = 'n', relx = 0.26, rely = 0.30)
+                                        width = self.Placement['StageTable']['Sheet1'][2], 
+                                        height = self.Placement['StageTable']['Sheet1'][3], 
+                                        show_x_scrollbar = False, 
+                                        show_y_scrollbar = True
+                                        )
+        self.stage_table.place(
+                            anchor = 'n', 
+                            relx = self.Placement['StageTable']['Sheet1'][0], 
+                            rely = self.Placement['StageTable']['Sheet1'][1]
+                            )
 
         # Set Stage Table Drop Down Lists
         for k in range(len(Analysis['Stages']['End Index']['Value'])+1):
@@ -418,13 +425,13 @@ class TMAnalysis_GUI:
                     self.stage_table.set_cell_data(i,j,table_data[i-1][j])
 
         # -- Format
-        self.stage_table.column_width(column = 0, width = 80, redraw = True)
-        self.stage_table.column_width(column = 1, width = 140, redraw = True)
-        self.stage_table.column_width(column = 2, width = 90, redraw = True)
-        self.stage_table.column_width(column = 3, width = 120, redraw = True)
-        self.stage_table.column_width(column = 4, width = 120, redraw = True)
-        self.stage_table.column_width(column = 5, width = 100, redraw = True)
-        self.stage_table.column_width(column = 6, width = 80, redraw = True)
+        self.stage_table.column_width(column = 0, width = self.Placement['StageTable']['Sheet1'][4], redraw = True)
+        self.stage_table.column_width(column = 1, width = self.Placement['StageTable']['Sheet1'][5], redraw = True)
+        self.stage_table.column_width(column = 2, width = self.Placement['StageTable']['Sheet1'][6], redraw = True)
+        self.stage_table.column_width(column = 3, width = self.Placement['StageTable']['Sheet1'][7], redraw = True)
+        self.stage_table.column_width(column = 4, width = self.Placement['StageTable']['Sheet1'][8], redraw = True)
+        self.stage_table.column_width(column = 5, width = self.Placement['StageTable']['Sheet1'][9], redraw = True)
+        self.stage_table.column_width(column = 6, width = self.Placement['StageTable']['Sheet1'][10], redraw = True)
 
         # -- Enable Bindings
         self.stage_table.enable_bindings('all')
@@ -442,7 +449,7 @@ class TMAnalysis_GUI:
 
     # -- Stage Table Popupmenu Button - Edit the start point of a stage
     def edit_stage_start(self):
-        self.selected_row = list(self.stage_table.get_selected_rows())[0] # Get the selected row
+        self.selected_row = self.stage_table.selected.row                 # Get the selected row
         self.clicked_pt = 1                                               # Set to 1 (indicates editing start points)
         self.clicked_idx = -1                                             # Initialize index to -1
         # Add binding for the button press
@@ -450,7 +457,7 @@ class TMAnalysis_GUI:
 
     # -- Stage Table Popupmenu Button - Edit the end point of a stage
     def edit_stage_end(self):
-        self.selected_row = list(self.stage_table.get_selected_rows())[0] # Get the selected row
+        self.selected_row = self.stage_table.selected.row                 # Get the selected row
         self.clicked_pt = 2                                               # Set to 2 (indicates editing end points)
         self.clicked_idx = -1                                             # Initialize index to -1
         # Add binding for the button press
@@ -459,7 +466,7 @@ class TMAnalysis_GUI:
     # -- Update the Stage Table if a Start Point was Changed
     def update_table_start(self, event):
         # Get the Stage Table Data
-        table_data = self.stage_table.get_sheet_data(return_copy = False, get_header = False, get_index = False)
+        table_data = self.stage_table.data
 
         # Unpack
         Raw = self.Raw
@@ -549,7 +556,7 @@ class TMAnalysis_GUI:
     # -- Update the Stage Table if a Start Point was Changed
     def update_table_end(self, event):
         # Get the Stage Table Data
-        table_data = self.stage_table.get_sheet_data(return_copy = False, get_header = False, get_index = False)
+        table_data = self.stage_table.data
 
         # Unpack
         Raw = self.Raw
@@ -632,12 +639,12 @@ class TMAnalysis_GUI:
     # -- Move Point Right on Stage Table
     def move_right(self,event):
         # Remove the Previous Point
-        self.plot1.lines.pop(len(self.plot1.lines)-1)
+        self.plot1.lines[-1].remove()
         self.canvas.draw()
 
         # Get the labels
-        xlabel = self.x_plot_opt.get()
-        ylabel = self.y_plot_opt.get()
+        xlabel = self.x_plot_menu.get()
+        ylabel = self.y_plot_menu.get()
 
         # Update the index
         mind_i = self.clicked_idx + 1
@@ -656,12 +663,12 @@ class TMAnalysis_GUI:
     # -- Move Point Left on Stage Table
     def move_left(self,event):
         # Remove the Previous Point
-        self.plot1.lines.pop(len(self.plot1.lines)-1)
+        self.plot1.lines[-1].remove()
         self.canvas.draw()
 
         # Get the labels
-        xlabel = self.x_plot_opt.get()
-        ylabel = self.y_plot_opt.get()
+        xlabel = self.x_plot_menu.get()
+        ylabel = self.y_plot_menu.get()
 
         # Update the index
         mind_i = self.clicked_idx - 1
@@ -688,8 +695,8 @@ class TMAnalysis_GUI:
                 self.y= event.ydata
 
                 # Get the x and y
-                xlabel = self.x_plot_opt.get()
-                ylabel = self.y_plot_opt.get()
+                xlabel = self.x_plot_menu.get()
+                ylabel = self.y_plot_menu.get()
 
                 # Find the closest point to the point selected
                 mind = 1e5
@@ -718,7 +725,7 @@ class TMAnalysis_GUI:
                     self.canvas.get_tk_widget().bind("<Return>", self.update_table_start)
 
                 # For editing end point, ensure the last row isn't selected and bind 'Return'
-                elif self.clicked_pt == 2 and self.selected_row < len(self.stage_table.get_sheet_data(return_copy = False, get_header = False, get_index = False))-1: 
+                elif self.clicked_pt == 2 and self.selected_row < len(self.stage_table.data)-1: 
                     self.canvas.get_tk_widget().bind("<Return>", self.update_table_end)
 
                 self.canvas.get_tk_widget().focus_set() # Set Bindings
@@ -773,7 +780,7 @@ class TMAnalysis_GUI:
     # -- Move proportional limit right
     def move_right_prop(self,event):
         # Remove the Previous Point
-        self.plot1.lines.pop(len(self.plot1.lines)-1)
+        self.plot1.lines[-1].remove()
         self.canvas.draw()
 
         # Update the index
@@ -793,7 +800,7 @@ class TMAnalysis_GUI:
     # -- Move proportional limit left
     def move_left_prop(self,event):
         # Remove the Previous Point
-        self.plot1.lines.pop(len(self.plot1.lines)-1)
+        self.plot1.lines[-1].remove()
         self.canvas.draw()
 
         # Update the index
@@ -871,7 +878,7 @@ class TMAnalysis_GUI:
     def edit_modulus(self):
         if self.prop_plot_opt.get() == "Stress vs Strain":
             # Get the current modulus
-            table_data = self.prop_table.get_sheet_data(return_copy = False, get_header = False, get_index = False)
+            table_data = self.prop_table.data
             self.curr_mod = float(table_data[0][1])
             self.curr_mod_del = 0.01*float(table_data[0][1])
 
@@ -892,7 +899,7 @@ class TMAnalysis_GUI:
                 mod_line_id = i
 
         # Remove the Previous Point
-        self.plot1.lines.pop(mod_line_id)
+        self.plot1.lines[mod_line_id].remove()
         self.canvas.draw()
 
         # -- Unpack stress and strain for convenience
@@ -944,7 +951,7 @@ class TMAnalysis_GUI:
                 mod_line_id = i
 
         # Remove the Previous Point
-        self.plot1.lines.pop(mod_line_id)
+        self.plot1.lines[mod_line_id].remove()
         self.canvas.draw()
 
         # -- Unpack stress and strain for convenience
@@ -1110,7 +1117,7 @@ class TMAnalysis_GUI:
     # -- Move creep zone end point right
     def move_right_creep(self, event):
         # Remove the Previous Point
-        self.plot1.lines.pop(len(self.plot1.lines)-1)
+        self.plot1.lines[-1].remove()
         self.canvas.draw()
 
         # Update the index
@@ -1130,7 +1137,7 @@ class TMAnalysis_GUI:
     # -- Move creep zone end point left
     def move_left_creep(self, event):
         # Remove the Previous Point
-        self.plot1.lines.pop(len(self.plot1.lines)-1)
+        self.plot1.lines[-1].remove()
         self.canvas.draw()
 
         # Update the index
@@ -1410,13 +1417,51 @@ class TMAnalysis_GUI:
         self.GA_btn2.destroy() 
 
         # Ask user for any additional notes
-        self.add_notes_end = tk.Label(window, text = "Additional Test/Analysis Notes:",font = (fontname, 12), bg = bg_color)
-        self.add_notes_end.place(anchor = 'n', relx = 0.5, rely = 0.3)
-        self.add_notes_entry = tk.Text(window, width = 100, height = 8, font = (fontname, 12), bg = bg_color)
-        self.add_notes_entry.place(anchor = 'n', relx = 0.5, rely = 0.35)
-        self.add_notes_cont = tk.Button(window, text = "Continue", command = self.run_next_or_save, 
-                                    font = (fontname, fsize_s), bg = 'light green')
-        self.add_notes_cont.place(anchor = 'n', relx = 0.9675, rely = 0.94)
+        self.add_notes_end = ttk.Label(
+                                    window, 
+                                    text = "Additional Test/Analysis Notes:",
+                                    style = 'Modern1.TLabel'
+                                    )
+        self.add_notes_end.place(
+                                anchor = 'n', 
+                                relx = self.Placement['Notes']['Label1'][0], 
+                                rely = self.Placement['Notes']['Label1'][1]
+                                )
+        self.add_notes_entry = tk.Text(
+                                    window, 
+                                    width = self.Placement['Notes']['Text1'][2], 
+                                    height = self.Placement['Notes']['Text1'][3], 
+                                    font = ('Segoe UI', self.Placement['Notes']['Text1'][4]), 
+                                    bg = 'white'
+                                    )
+        self.add_notes_entry.place(
+                                anchor = 'n', 
+                                relx = self.Placement['Notes']['Text1'][0], 
+                                rely = self.Placement['Notes']['Text1'][1]
+                                )
+        self.add_notes_cont = ttk.Button(
+                                        window, 
+                                        text = "Continue", 
+                                        command = self.run_next_or_save, 
+                                        style = 'Modern1.TButton'
+                                        )
+        self.add_notes_cont.place(
+                                anchor = 'n', 
+                                relx = self.Placement['Notes']['Button1'][0], 
+                                rely = self.Placement['Notes']['Button1'][1]
+                                )
+        self.add_notes_back = ttk.Button(
+                                        window, 
+                                        text = "Back", 
+                                        command = self.return_analysis, 
+                                        style = 'Modern1.TButton'
+                                        )
+        self.add_notes_back.place(
+                                anchor = 'n', 
+                                relx = self.Placement['Notes']['Button2'][0], 
+                                rely = self.Placement['Notes']['Button2'][1]
+                                )
+
 
     # Run next test or save all files to the chosen directory
     def run_next_or_save(self):
@@ -1485,6 +1530,18 @@ class TMAnalysis_GUI:
             # Build the Analysis Module Entry Point
             from GUI.FileSelection import FileSelection
             FileSelection(self,window)
+
+    # Return to the Analysis Screen
+    def return_analysis(self):
+        # Destroy the add notes pages
+        self.add_notes_end.destroy()
+        self.add_notes_entry.destroy()
+        self.add_notes_cont.destroy()
+        self.add_notes_back.destroy()
+
+        # Recall the analysis window
+        GeneralAnalysis(self, window)
+
 
 #Call the GUI
 TMAnalysis_GUI()
