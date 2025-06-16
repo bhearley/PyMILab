@@ -44,7 +44,7 @@ def Build_Stage_Table(self, window):
     # -- Delete the property plot, plot menus, and plot button
     if hasattr(self, 'A2_btn5'):
         self.A2_btn5.destroy()
-        self.prop_plot_menu.destroy()
+        self.prop_plot_opt.destroy()
         self.toolbar.destroy()
         self.canvas.get_tk_widget().destroy()
     # -- Delete the 'Reanalyze Stages' button

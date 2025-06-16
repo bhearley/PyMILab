@@ -277,8 +277,7 @@ class TMAnalysis_GUI:
                 json.dump(self.Analysis, outfile, cls=NpEncoder)
 
             # Call Analysis Code
-            from TMAnalysis import TMAnalysisEngine
-            self.Raw, self.Analysis, self.dir, err_flag, msg, self.Analysis_file = TMAnalysisEngine(self.raw_files[self.fcount], self.Analysis_file, self.user_opt)
+            self.Raw, self.Analysis, self.dir, err_flag, msg, self.Analysis_file = TMAnalysis(self.raw_files[self.fcount], self.Analysis_file, self.user_opt)
 
             # Check the error flag
             if err_flag == 1:
@@ -625,8 +624,7 @@ class TMAnalysis_GUI:
             json.dump(self.Analysis, outfile, cls=NpEncoder)
 
         # Call Analysis Code
-        from TMAnalysis import TMAnalysisEngine
-        self.Raw, self.Analysis, self.dir, err_flag, msg, self.Analysis_file = TMAnalysisEngine(self.raw_files[self.fcount], self.Analysis_file, self.user_opt)
+        self.Raw, self.Analysis, self.dir, err_flag, msg, self.Analysis_file = TMAnalysis(self.raw_files[self.fcount], self.Analysis_file, self.user_opt)
 
         # Check the error flag
         if err_flag == 1:
@@ -1398,7 +1396,7 @@ class TMAnalysis_GUI:
         # -- Delete the property plot, plot menus, and plot button
         if hasattr(self, 'A2_btn5'):
             self.A2_btn5.destroy()
-            self.prop_plot_menu.destroy()
+            self.prop_plot_opt.destroy()
             self.toolbar.destroy()
             self.canvas.get_tk_widget().destroy()
         # -- Delete the 'Reanalyze Stages' button
@@ -1507,8 +1505,7 @@ class TMAnalysis_GUI:
             self.user_opt['UserEdit']['Prop'] = 0
 
             # Perform the analysis
-            from TMAnalysis import TMAnalysisEngine
-            self.Raw, self.Analysis, self.dir, err_flag, msg, self.Analysis_file = TMAnalysisEngine(self.raw_files[self.fcount], 0, self.user_opt)
+            self.Raw, self.Analysis, self.dir, err_flag, msg, self.Analysis_file = TMAnalysis(self.raw_files[self.fcount], 0, self.user_opt)
 
             if err_flag == 0:
                 from GUI.GeneralAnalysis import GeneralAnalysis

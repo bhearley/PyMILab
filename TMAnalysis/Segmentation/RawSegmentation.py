@@ -33,8 +33,8 @@ def RawSegmentation(Raw, Analysis, dir):
     # Find end of each stage
     step = int(0.005*max(index))
     minmax_step = 3*step
-    start_idx = 0
-    end_idx = 10
+    start_idx = step
+    end_idx = int(3/2*step)
     stage_idx = []
     ct = 0 # Counter for stage name
     const_flag = 0 #Is the current stage constant stress or strain
@@ -50,6 +50,7 @@ def RawSegmentation(Raw, Analysis, dir):
                 # -- Get Linear fits and evaluate linearity
                 strain_fit = scipy.stats.linregress(time[start_idx:end_idx], strain[start_idx:end_idx])
                 stress_fit = scipy.stats.linregress(time[start_idx:end_idx], stress[start_idx:end_idx])
+
                 if strain_fit.rvalue**2 < 0.975 and stress_fit.rvalue**2 < 0.975:
                     lin_flag = 1
 

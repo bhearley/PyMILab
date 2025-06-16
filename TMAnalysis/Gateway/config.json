@@ -1,0 +1,15 @@
+{
+    "Time":"Time",
+    "Strain (11 axis)":"Strain-11",
+    "Strain (22 axis)":"Strain-22",
+    "Strain (33 axis)":"Strain-33",
+    "Shear Strain (12 axis)":"Strain-12",
+    "Shear Strain (13 axis)":"Strain-13",
+    "Shear Strain (23 axis)":"Strain-23",
+    "Stress (11 axis)":"Stress-11",
+    "Stress (22 axis)":"Stress-22",
+    "Stress (33 axis)":"Stress-33",
+    "Shear Stress (12 axis)":"Stress-12",
+    "Shear Stress (13 axis)":"Stress-13",
+    "Shear Stress (23 axis)":"Stress-23"
+}
